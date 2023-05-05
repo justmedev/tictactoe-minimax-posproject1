@@ -2,7 +2,8 @@ import java.util.Arrays;
 
 public class TicTacToe extends Game {
     private Logger logger = new Logger("TicTacToe");
-    public Field[][] field = new Field[3][3];
+    public Piece[][] field = new Piece[3][3];
+    public Renderer renderer = new Renderer();
     public Piece player;
     public Piece computer;
 
@@ -12,8 +13,8 @@ public class TicTacToe extends Game {
 
     public void resetField() {
         for (int row = 0; row < field.length; row++) {
-            field[row] = new Field[3];
-            Arrays.fill(field[row], Field.PLAYER_O);
+            field[row] = new Piece[3];
+            Arrays.fill(field[row], Piece.EMPTY);
         }
     }
 
@@ -25,5 +26,7 @@ public class TicTacToe extends Game {
     @Override
     public void onTick() {
 
+        // renderer.render(field);
+        // nextTick(tick++);
     }
 }
