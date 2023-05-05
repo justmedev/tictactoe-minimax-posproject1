@@ -1,4 +1,5 @@
 public class Renderer {
+    private Logger logger = new Logger("Renderer");
     private String corner = "+";
     private String wall = "|";
     private String ceiling = "-";
@@ -20,7 +21,7 @@ public class Renderer {
 
             for (int index = 0; index < matrix[rowIndex].length; index++) {
                 if (Preferences.DEBUG_FIELD && index != 0) {
-                    System.out.printf("field[%d][%d] = %c%n", rowIndex - 1, index - 1, field[rowIndex - 1][index - 1].getSymbol());
+                    logger.infof("field[%d][%d] = %c%n", rowIndex - 1, index - 1, field[rowIndex - 1][index - 1].getSymbol());
                 }
 
                 matrix[rowIndex][index] = index != 0 ? field[rowIndex - 1][index - 1].getSymbol() : (char) (rowIndex + '0');

@@ -19,4 +19,8 @@ public class Logger {
     public void info(String message) {
         System.out.printf("%s %s%n", formattedTag(), message);
     }
+
+    public void infof(String message, Object ...args) {
+        System.out.printf("%s %s%n", formattedTag(), message.formatted(args));
+    }
 }
