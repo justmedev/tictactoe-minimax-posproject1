@@ -1,4 +1,4 @@
 public abstract class Game {
-    public abstract void onStart();
-    public abstract void onTick();
+    public abstract void beforeFirstTick();
+    public abstract void nextTick(int tick);
 }
