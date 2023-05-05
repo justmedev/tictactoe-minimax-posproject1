@@ -14,15 +14,6 @@ public class Engine {
             logger.err("Attach first!");
             return;
         }
-        start();
-        nextTick();
-    }
-
-
-    public void start() {
-        logger.info("game start!");
-    }
-
-    public void nextTick() {
+        game.beforeFirstTick();
     }
 }
