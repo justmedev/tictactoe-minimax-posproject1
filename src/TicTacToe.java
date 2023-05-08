@@ -38,6 +38,9 @@ public class TicTacToe extends Game {
                 computer = Piece.O;
             } else {
                 logger.err("You have to either choose x or o!");
+                clearConsole();
+                beforeFirstTick();
+                return;
             }
 
             System.out.printf("Hello! You are player %s%n", player);
