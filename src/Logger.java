@@ -18,7 +18,7 @@ public class Logger {
         if (args == null) return "null";
         else if (args.length > 1) {
             String asString = Arrays.deepToString(args);
-            return asString.substring(1, asString.length() - 2);
+            return asString.substring(1, asString.length() - 1);
         } else return args[0].toString();
     }
 
