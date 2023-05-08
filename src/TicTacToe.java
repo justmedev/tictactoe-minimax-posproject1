@@ -66,9 +66,14 @@ public class TicTacToe extends Game {
             return;
         }
         field[chosen.col()][chosen.row()] = player;
+
+        if (checkIfWon()) {
+            logger.info("You won the game!");
+            return;
+        }
+        clearConsole();
         nextTick(tick++);
 
-        clearConsole();
     }
 
     public ChosenField getFieldFromPlayer() {
@@ -92,5 +97,25 @@ public class TicTacToe extends Game {
 
     public void clearConsole() {
         System.out.println(System.lineSeparator().repeat(100)); // cross-platform & always works
+    }
+
+    public boolean checkIfWon() {
+        for (Piece[] row : field) {
+            int matchingAmount = 0;
+            Piece lastMatch = Piece.EMPTY;
+
+            for (int i = 0; i < row.length; i++) {
+                Piece piece = row[i];
+                if (i == 0) lastMatch = piece;
+                if (lastMatch == piece && piece != Piece.EMPTY) matchingAmount++;
+                else matchingAmount = 0;
+            }
+
+            if (matchingAmount == 3) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
