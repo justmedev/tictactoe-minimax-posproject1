@@ -5,12 +5,6 @@ import game.Piece;
 
 public class RandomAI extends BaseAI {
     private final static Logger logger = new Logger("RandomAI");
-    public Piece piece = Piece.EMPTY;
-
-    @Override
-    public void initialize(Piece piece) {
-        this.piece = piece;
-    }
 
     @Override
     public void nextMove(Piece[] field, int tick) {
