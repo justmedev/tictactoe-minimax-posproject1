@@ -5,6 +5,7 @@ import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
 import engine.Renderer;
+import game.errors.PositionOccupied;
 import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ enum Player {
 public class TicTacToe extends Game {
     private Scanner scanner = new Scanner(System.in);
     private Logger logger = new Logger("game.TicTacToe");
-    public Piece[][] field = new Piece[3][3];
+    public Field field = new Field();
     public Renderer renderer = new Renderer();
     public Piece player;
     public Piece computer;
@@ -32,14 +33,7 @@ public class TicTacToe extends Game {
     public Player lastPlayer = Player.PLAYER_0;
 
     public TicTacToe() {
-        resetField();
-    }
-
-    public void resetField() {
-        for (int row = 0; row < field.length; row++) {
-            field[row] = new Piece[3];
-            Arrays.fill(field[row], Piece.EMPTY);
-        }
+        field.resetField();
     }
 
     @Override
@@ -72,7 +66,7 @@ public class TicTacToe extends Game {
 
     @Override
     public void nextTick(int tick) {
-        renderer.render(field);
+        renderer.render(field.field);
 
         ChosenField chosen;
         Piece pieceToPlace;
@@ -80,23 +74,21 @@ public class TicTacToe extends Game {
             chosen = getFieldFromPlayer();
             pieceToPlace = player;
         } else {
-            chosen = ai.nextMove(field, tick);
+            chosen = ai.nextMove(field.field, tick);
             pieceToPlace = computer;
         }
         if (chosen == null) return; // Something went wrong; Panic & Exit
-        Piece pieceAtChosen = field[chosen.col()][chosen.row()];
 
-        // Position already occupied
-        if (pieceAtChosen != Piece.EMPTY) {
+        try {
+            field.place(chosen.col(), chosen.row(), pieceToPlace);
+        } catch (PositionOccupied e) {
             logger.info("Position already occupied! Try another one.");
             nextTick(tick++);
             return;
         }
 
-        field[chosen.col()][chosen.row()] = pieceToPlace;
-
         if (checkIfWon()) {
-            renderer.render(field);
+            renderer.render(field.field);
             logger.info("You won the game!");
             return;
         }
@@ -130,7 +122,7 @@ public class TicTacToe extends Game {
     }
 
     public boolean checkIfWon() {
-        for (Piece[] row : field) {
+        for (Piece[] row : field.field) {
             int matchingAmount = 0;
             Piece lastMatch = Piece.EMPTY;
 
