@@ -1,5 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public class Logger {
     public String tag;
 
@@ -12,12 +14,20 @@ public class Logger {
         return "[%s]".formatted(tag);
     }
 
-    public void err(String message) {
-        System.err.printf("%s %s%n", formattedTag(), message);
+    private String formatArgs(Object ...args) {
+        if (args == null) return "null";
+        else if (args.length > 1) {
+            String asString = Arrays.deepToString(args);
+            return asString.substring(1, asString.length() - 2);
+        } else return args[0].toString();
     }
 
-    public void info(String message) {
-        System.out.printf("%s %s%n", formattedTag(), message);
+    public void err(Object ...args) {
+        System.err.printf("%s %s%n", formattedTag(), formatArgs(args));
+    }
+
+    public void info(Object ...args) {
+        System.out.printf("%s %s%n", formattedTag(), formatArgs(args));
     }
 
     public void infof(String message, Object ...args) {
