@@ -1,7 +1,12 @@
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+
+record ChosenField(int row, int col) {
+}
 
 public class TicTacToe extends Game {
+    private Scanner scanner = new Scanner(System.in);
     private Logger logger = new Logger("TicTacToe");
     public Piece[][] field = new Piece[3][3];
     public Renderer renderer = new Renderer();
@@ -23,9 +28,8 @@ public class TicTacToe extends Game {
     public void beforeFirstTick() {
         System.out.println("Choose player o/x:");
 
-        Scanner s = new Scanner(System.in);
-        if (s.hasNext()) {
-            String inp = s.next().trim().toLowerCase();
+        if (scanner.hasNext()) {
+            String inp = scanner.next().trim().toLowerCase();
             if (inp.equals(Piece.O.getSymbolString())) {
                 player = Piece.O;
                 computer = Piece.X;
@@ -33,7 +37,7 @@ public class TicTacToe extends Game {
                 player = Piece.X;
                 computer = Piece.O;
             } else {
-                logger.err("");
+                logger.err("You have to either choose x or o!");
             }
 
             System.out.printf("Hello! You are player %s%n", player);
@@ -44,13 +48,46 @@ public class TicTacToe extends Game {
 
     @Override
     public void nextTick(int tick) {
-        /*try {
-            in.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
+        renderer.render(field);
 
-        // renderer.render(field);
-        // nextTick(tick++);
+
+        ChosenField chosen = getFieldFromPlayer();
+        if (chosen == null) return; // Something went wrong; Panic & Exit
+        Piece pieceAtChosen = field[chosen.col()][chosen.row()];
+
+        // Position already occupied
+        logger.info(pieceAtChosen);
+        if (pieceAtChosen != Piece.EMPTY) {
+            logger.info("Position already occupied! Try another one.");
+            nextTick(tick++);
+            return;
+        }
+        field[chosen.col()][chosen.row()] = player;
+        nextTick(tick++);
+
+        clearConsole();
+    }
+
+    public ChosenField getFieldFromPlayer() {
+        System.out.println("Enter field: ");
+
+        if (scanner.hasNext()) {
+            String inp = scanner.next().trim().toLowerCase();
+            if (Pattern.matches("([A-z])([0-9])", inp)) {
+                int col = Character.getNumericValue(inp.charAt(0)) - 10;
+                int row = Integer.parseInt(Character.toString(inp.charAt(1))) - 1;
+
+                logger.info(col, row);
+                return new ChosenField(col, row);
+            } else {
+                logger.err("Invalid format! First column then row: a1, c3, ...");
+                getFieldFromPlayer();
+            }
+        }
+        return null;
+    }
+
+    public void clearConsole() {
+        System.out.println(System.lineSeparator().repeat(100)); // cross-platform & always works
     }
 }
