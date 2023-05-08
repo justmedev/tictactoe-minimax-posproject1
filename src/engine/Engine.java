@@ -1,7 +1,9 @@
+package engine;
+
 import org.jetbrains.annotations.NotNull;
 
 public class Engine {
-    private Logger logger = new Logger("Engine");
+    private Logger logger = new Logger("engine.Engine");
     private Game game;
 
     public void attachTo(@NotNull Game game) {

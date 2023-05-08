@@ -1,3 +1,5 @@
+package game;
+
 public enum Field {
     EMPTY,
     PLAYER_X,

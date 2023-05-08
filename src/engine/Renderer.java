@@ -1,5 +1,9 @@
+package engine;
+
+import game.Piece;
+
 public class Renderer {
-    private Logger logger = new Logger("Renderer");
+    private Logger logger = new Logger("engine.Renderer");
     private String corner = "+";
     private String wall = "|";
     private String ceiling = "-";

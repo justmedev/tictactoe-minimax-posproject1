@@ -1,3 +1,9 @@
+package game;
+
+import engine.Game;
+import engine.Logger;
+import engine.Renderer;
+
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -7,7 +13,7 @@ record ChosenField(int row, int col) {
 
 public class TicTacToe extends Game {
     private Scanner scanner = new Scanner(System.in);
-    private Logger logger = new Logger("TicTacToe");
+    private Logger logger = new Logger("game.TicTacToe");
     public Piece[][] field = new Piece[3][3];
     public Renderer renderer = new Renderer();
     public Piece player;

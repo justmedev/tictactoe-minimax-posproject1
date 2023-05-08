@@ -1,3 +1,5 @@
+package game;
+
 public enum Piece {
     X('x'),
     O('o'),
