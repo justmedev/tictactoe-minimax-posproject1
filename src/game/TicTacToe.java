@@ -5,13 +5,21 @@ import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
 import engine.Renderer;
+import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-record ChosenField(int row, int col) {
+enum Player {
+    PLAYER_0,
+    PLAYER_1;
+
+    public static Player otherPlayer(Player player) {
+        return player == PLAYER_0 ? PLAYER_1 : PLAYER_0;
+    }
 }
+
 
 public class TicTacToe extends Game {
     private Scanner scanner = new Scanner(System.in);
@@ -21,6 +29,7 @@ public class TicTacToe extends Game {
     public Piece player;
     public Piece computer;
     public BaseAI ai;
+    public Player lastPlayer = Player.PLAYER_0;
 
     public TicTacToe() {
         resetField();
@@ -65,26 +74,35 @@ public class TicTacToe extends Game {
     public void nextTick(int tick) {
         renderer.render(field);
 
-
-        ChosenField chosen = getFieldFromPlayer();
+        ChosenField chosen;
+        Piece pieceToPlace;
+        if (lastPlayer == Player.PLAYER_0) {
+            chosen = getFieldFromPlayer();
+            pieceToPlace = player;
+        } else {
+            chosen = ai.nextMove(field, tick);
+            pieceToPlace = computer;
+        }
         if (chosen == null) return; // Something went wrong; Panic & Exit
         Piece pieceAtChosen = field[chosen.col()][chosen.row()];
 
         // Position already occupied
-        logger.info(pieceAtChosen);
         if (pieceAtChosen != Piece.EMPTY) {
             logger.info("Position already occupied! Try another one.");
             nextTick(tick++);
             return;
         }
-        field[chosen.col()][chosen.row()] = player;
+
+        field[chosen.col()][chosen.row()] = pieceToPlace;
 
         if (checkIfWon()) {
             renderer.render(field);
             logger.info("You won the game!");
             return;
         }
-        clearConsole();
+
+        lastPlayer = Player.otherPlayer(lastPlayer);
+        // clearConsole();
         nextTick(tick++);
     }
 

@@ -1,5 +1,6 @@
 package ai;
 
+import game.ChosenField;
 import game.Piece;
 
 public abstract class BaseAI {
@@ -9,6 +10,5 @@ public abstract class BaseAI {
         this.piece = piece;
     }
 
-    public abstract void nextMove(Piece[] field, int tick);
-
+    public abstract ChosenField nextMove(Piece[][] field, int tick);
 }
