@@ -1,5 +1,7 @@
 package game;
 
+import ai.BaseAI;
+import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
 import engine.Renderer;
@@ -18,6 +20,7 @@ public class TicTacToe extends Game {
     public Renderer renderer = new Renderer();
     public Piece player;
     public Piece computer;
+    public BaseAI ai;
 
     public TicTacToe() {
         resetField();
@@ -51,6 +54,9 @@ public class TicTacToe extends Game {
 
             System.out.printf("Hello! You are player %s%n", player);
             System.out.println("This is the empty starting field. Rows are A-C and cols are 1-3!");
+
+            ai = new RandomAI();
+            ai.initialize(computer);
             nextTick(0); // Execute first game tick after start
         }
     }
@@ -74,12 +80,12 @@ public class TicTacToe extends Game {
         field[chosen.col()][chosen.row()] = player;
 
         if (checkIfWon()) {
+            renderer.render(field);
             logger.info("You won the game!");
             return;
         }
         clearConsole();
         nextTick(tick++);
-
     }
 
     public ChosenField getFieldFromPlayer() {
