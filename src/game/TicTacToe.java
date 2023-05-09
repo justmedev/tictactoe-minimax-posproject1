@@ -122,7 +122,12 @@ public class TicTacToe extends Game {
     }
 
     public boolean checkIfWon() {
-        for (Piece[] row : field.field) {
+        if (checkIfWinningLine(field.field)) return true;
+        else return checkIfWinningLine(swapMatrix(field.field));
+    }
+
+    private boolean checkIfWinningLine(Piece[][] matrix) {
+        for (Piece[] row : matrix) {
             int matchingAmount = 0;
             Piece lastMatch = Piece.EMPTY;
 
@@ -137,7 +142,20 @@ public class TicTacToe extends Game {
                 return true;
             }
         }
-
         return false;
+    }
+
+    private static Piece[][] swapMatrix(Piece[][] pField) {
+        int originalTotalRows = pField.length;
+        int originalTotalColumns = pField[0].length;
+
+        Piece[][] newMatrix = new Piece[originalTotalColumns][originalTotalRows];
+
+        for(int i=0; i< originalTotalRows; i++){
+            for(int j=0; j < originalTotalColumns; j++){
+                newMatrix[j][i] = pField[i][j];
+            }
+        }
+        return newMatrix;
     }
 }
