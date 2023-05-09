@@ -110,10 +110,11 @@ public class TicTacToe extends Game {
     @Override
     public void nextTick(int tick) {
         renderer.render(field.field);
+        Player currentPlayer = Player.otherPlayer(lastPlayer);
 
         ChosenField chosen;
         Piece pieceToPlace;
-        if (lastPlayer == Player.PLAYER_0) {
+        if (currentPlayer == Player.PLAYER_1) {
             chosen = getFieldFromPlayer();
             pieceToPlace = player;
         } else {
@@ -134,7 +135,9 @@ public class TicTacToe extends Game {
 
         if (checkIfWon()) {
             renderer.render(field.field);
-            logger.info("You won the game!");
+
+            if (currentPlayer == Player.PLAYER_1) logger.info("Congrats :) You won the game!");
+            else logger.info("Bruh... Couldn't even win against some dumb ai????");
             return;
         }
 
