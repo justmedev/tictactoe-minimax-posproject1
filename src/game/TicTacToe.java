@@ -139,7 +139,7 @@ public class TicTacToe extends Game {
         }
 
         lastPlayer = Player.otherPlayer(lastPlayer);
-        // clearConsole();
+        clearConsole();
         nextTick(tick++);
     }
 
