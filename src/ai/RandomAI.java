@@ -18,9 +18,10 @@ public class RandomAI extends BaseAI {
             System.exit(1);
         }
 
-        int row = rng.nextInt(0, 2);
-        int col = rng.nextInt(0, 2);
+        int row = rng.nextInt(0, 3);
+        int col = rng.nextInt(0, 3);
 
+        logger.infof("ai pos chosen: field[%d][%d]: %s", row, col, field.field[row][col]);
         if (field.positionOccupied(row, col)) {
             return nextMove(field, tick);
         }
