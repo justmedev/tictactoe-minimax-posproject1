@@ -4,9 +4,12 @@ import ai.BaseAI;
 import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
+import engine.MenuBuilder;
 import engine.Renderer;
 import game.errors.PositionOccupied;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -17,6 +20,12 @@ enum Player {
     public static Player otherPlayer(Player player) {
         return player == PLAYER_0 ? PLAYER_1 : PLAYER_0;
     }
+}
+
+enum Enemy {
+    RANDOM_AI,
+    MIN_MAX,
+    PLAYER_1,
 }
 
 
@@ -34,9 +43,38 @@ public class TicTacToe extends Game {
         field.resetField();
     }
 
-    @Override
-    public void beforeFirstTick() {
-        System.out.println("Choose player o/x:");
+    public void makeMenu() {
+        MenuBuilder menuBuilder = new MenuBuilder();
+        menuBuilder.createMenu(new LinkedHashMap<>(Map.of(
+                "a\t", "Against dumb ai",
+                "b\t", "Against smart ai",
+                "c\t", "Two Player Mode"
+        ))).display();
+
+        switch (readInput("a, b or c? ").trim().charAt(0)) {
+            case 'a' -> startGame(Enemy.RANDOM_AI);
+            case 'b' -> startGame(Enemy.MIN_MAX);
+            case 'c' -> startGame(Enemy.PLAYER_1);
+            default -> {
+                System.out.println("Invalid Input!");
+                makeMenu();
+            }
+        }
+    }
+
+    public int readInputAsInt(String message) {
+        return Integer.parseInt(readInput(message));
+    }
+
+    public String readInput(String message) {
+        System.out.println(message);
+        while (true) {
+            if (scanner.hasNext()) return scanner.next();
+        }
+    }
+
+    public void startGame(Enemy enemy) {
+        System.out.println("Choose symbol o/x:");
 
         if (scanner.hasNext()) {
             String inp = scanner.next().trim().toLowerCase();
@@ -53,13 +91,28 @@ public class TicTacToe extends Game {
                 return;
             }
 
+            if (enemy == Enemy.MIN_MAX) initMinMaxAI();
+            else if (enemy == Enemy.RANDOM_AI) initRandomAI();
+            else throw new UnsupportedOperationException("Not yet implemented.");
+
             System.out.printf("Hello! You are player %s%n", player);
             System.out.println("This is the empty starting field. Rows are A-C and cols are 1-3!");
-
-            ai = new RandomAI();
-            ai.initialize(computer);
-            nextTick(0); // Execute first game tick after start
         }
+    }
+
+    public void initRandomAI() {
+        ai = new RandomAI();
+        ai.initialize(computer);
+        nextTick(0); // Execute first game tick after start
+    }
+
+    public void initMinMaxAI() {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
+
+    @Override
+    public void beforeFirstTick() {
+        makeMenu();
     }
 
     @Override
@@ -110,7 +163,7 @@ public class TicTacToe extends Game {
                 return new ChosenField(row, col);
             } else {
                 logger.err("Invalid format! First column then row: a1, c3, ...");
-                getFieldFromPlayer();
+                return getFieldFromPlayer();
             }
         }
         return null;
