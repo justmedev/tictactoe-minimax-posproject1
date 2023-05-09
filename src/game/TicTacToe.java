@@ -148,7 +148,7 @@ public class TicTacToe extends Game {
 
         if (scanner.hasNext()) {
             String inp = scanner.next().trim().toLowerCase();
-            if (Pattern.matches("([A-z])([0-9])", inp)) {
+            if (Pattern.matches("([A-c])([0-3])", inp)) {
                 int row = Integer.parseInt(Character.toString(inp.charAt(1))) - 1;
                 int col = Character.getNumericValue(inp.charAt(0)) - 10;
 
