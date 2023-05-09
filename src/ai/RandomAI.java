@@ -2,18 +2,28 @@ package ai;
 
 import engine.Logger;
 import game.ChosenField;
+import game.Field;
 import game.Piece;
+
+import java.util.Random;
 
 public class RandomAI extends BaseAI {
     private final static Logger logger = new Logger("RandomAI");
+    private final static Random rng = new Random();
 
     @Override
-    public ChosenField nextMove(Piece[][] field, int tick) {
+    public ChosenField nextMove(Field field, int tick) {
         if (this.piece == Piece.EMPTY) {
             logger.err("AI init failed!");
             System.exit(1);
         }
 
-        return new ChosenField(0, 0);
+        int row = rng.nextInt(0, 2);
+        int col = rng.nextInt(0, 2);
+
+        if (field.positionOccupied(row, col)) {
+            return nextMove(field, tick);
+        }
+        else return new ChosenField(row, col);
     }
 }

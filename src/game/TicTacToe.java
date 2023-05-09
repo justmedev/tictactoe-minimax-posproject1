@@ -6,9 +6,7 @@ import engine.Game;
 import engine.Logger;
 import engine.Renderer;
 import game.errors.PositionOccupied;
-import org.jetbrains.annotations.Range;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -74,7 +72,7 @@ public class TicTacToe extends Game {
             chosen = getFieldFromPlayer();
             pieceToPlace = player;
         } else {
-            chosen = ai.nextMove(field.field, tick);
+            chosen = ai.nextMove(field, tick);
             pieceToPlace = computer;
         }
         if (chosen == null) return; // Something went wrong; Panic & Exit
