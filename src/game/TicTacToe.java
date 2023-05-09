@@ -28,8 +28,8 @@ enum Enemy {
     PLAYER_1,
 }
 
-
 public class TicTacToe extends Game {
+    //region vars
     private Scanner scanner = new Scanner(System.in);
     private Logger logger = new Logger("game.TicTacToe");
     public Field field = new Field();
@@ -38,9 +38,16 @@ public class TicTacToe extends Game {
     public Piece computer;
     public BaseAI ai;
     public Player lastPlayer = Player.PLAYER_0;
+    //endregion
 
     public TicTacToe() {
         field.resetField();
+    }
+
+    //region start game
+    @Override
+    public void beforeFirstTick() {
+        makeMenu();
     }
 
     public void makeMenu() {
@@ -59,17 +66,6 @@ public class TicTacToe extends Game {
                 System.out.println("Invalid Input!");
                 makeMenu();
             }
-        }
-    }
-
-    public int readInputAsInt(String message) {
-        return Integer.parseInt(readInput(message));
-    }
-
-    public String readInput(String message) {
-        System.out.println(message);
-        while (true) {
-            if (scanner.hasNext()) return scanner.next();
         }
     }
 
@@ -109,11 +105,7 @@ public class TicTacToe extends Game {
     public void initMinMaxAI() {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
-
-    @Override
-    public void beforeFirstTick() {
-        makeMenu();
-    }
+    //endregion
 
     @Override
     public void nextTick(int tick) {
@@ -169,10 +161,24 @@ public class TicTacToe extends Game {
         return null;
     }
 
+    //region util
     public void clearConsole() {
         System.out.println(System.lineSeparator().repeat(100)); // cross-platform & always works
     }
 
+    public int readInputAsInt(String message) {
+        return Integer.parseInt(readInput(message));
+    }
+
+    public String readInput(String message) {
+        System.out.println(message);
+        while (true) {
+            if (scanner.hasNext()) return scanner.next();
+        }
+    }
+    //endregion
+
+    //region win checks
     public boolean checkIfWon() {
         if (checkIfWinningLine(field.field)) return true;
         else if (checkIfWinningDiagonal()) return true;
@@ -233,4 +239,5 @@ public class TicTacToe extends Game {
         }
         return newMatrix;
     }
+    //endregion
 }
