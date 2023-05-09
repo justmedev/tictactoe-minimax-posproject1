@@ -129,13 +129,23 @@ public class TicTacToe extends Game {
 
     private boolean checkIfWinningDiagonal() {
         Piece checkForPiece = field.field[0][0];
-        if (checkForPiece == Piece.EMPTY) return false;
-        int matches = 0;
-        for (int i = 0; i < field.field.length; i++) {
-            Piece p = field.field[i][i];
-            if (p == checkForPiece) matches++;
+        if (checkForPiece != Piece.EMPTY) {
+            int matches = 0;
+            for (int i = 0; i < field.field.length; i++) {
+                Piece p = field.field[i][i];
+                if (p == checkForPiece) matches++;
+            }
+            if (matches >= 3) return true;
         }
 
+        checkForPiece = field.field[0][field.field.length - 1];
+        if (checkForPiece == Piece.EMPTY) return false;
+
+        int matches = 0;
+        for (int i = field.field.length - 1; i >= 0; i--) {
+            Piece p = field.field[field.field.length - i - 1][i];
+            if (p == checkForPiece) matches++;
+        }
         return matches >= 3;
     }
 
@@ -164,8 +174,8 @@ public class TicTacToe extends Game {
 
         Piece[][] newMatrix = new Piece[originalTotalColumns][originalTotalRows];
 
-        for(int i=0; i< originalTotalRows; i++){
-            for(int j=0; j < originalTotalColumns; j++){
+        for (int i = 0; i < originalTotalRows; i++) {
+            for (int j = 0; j < originalTotalColumns; j++) {
                 newMatrix[j][i] = pField[i][j];
             }
         }
