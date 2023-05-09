@@ -123,7 +123,20 @@ public class TicTacToe extends Game {
 
     public boolean checkIfWon() {
         if (checkIfWinningLine(field.field)) return true;
+        else if (checkIfWinningDiagonal()) return true;
         else return checkIfWinningLine(swapMatrix(field.field));
+    }
+
+    private boolean checkIfWinningDiagonal() {
+        Piece checkForPiece = field.field[0][0];
+        if (checkForPiece == Piece.EMPTY) return false;
+        int matches = 0;
+        for (int i = 0; i < field.field.length; i++) {
+            Piece p = field.field[i][i];
+            if (p == checkForPiece) matches++;
+        }
+
+        return matches >= 3;
     }
 
     private boolean checkIfWinningLine(Piece[][] matrix) {
