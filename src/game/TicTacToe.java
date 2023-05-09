@@ -87,12 +87,12 @@ public class TicTacToe extends Game {
                 return;
             }
 
+            System.out.printf("Hello! You are player %s%n", player);
+            System.out.println("This is the empty starting field. Rows are A-C and cols are 1-3! Example move: a2");
+
             if (enemy == Enemy.MIN_MAX) initMinMaxAI();
             else if (enemy == Enemy.RANDOM_AI) initRandomAI();
             else throw new UnsupportedOperationException("Not yet implemented.");
-
-            System.out.printf("Hello! You are player %s%n", player);
-            System.out.println("This is the empty starting field. Rows are A-C and cols are 1-3!");
         }
     }
 
