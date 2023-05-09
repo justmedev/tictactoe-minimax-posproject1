@@ -43,8 +43,7 @@ public class Renderer {
 
         makeFloor(sb, fullWidth);
 
-        for (int i = 0; i < tableMatrix.length; i++) {
-            char[] cols = tableMatrix[i];
+        for (char[] cols : tableMatrix) {
             sb.append(wall);
 
             for (char col : cols) {
