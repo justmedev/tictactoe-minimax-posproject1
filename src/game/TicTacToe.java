@@ -28,6 +28,25 @@ enum Enemy {
     PLAYER_1,
 }
 
+enum WinState {
+    X,
+    O,
+    DRAW,
+    // Nobody won, signals to just continue the game instead of exiting.
+    CONTINUE_GAME;
+
+    public static WinState fromPiece(Piece piece) {
+        if (piece == Piece.X) return WinState.X;
+        else if (piece == Piece.O) return WinState.O;
+
+        return WinState.CONTINUE_GAME;
+    }
+
+    public boolean gameWon() {
+        return this == X || this == O;
+    }
+}
+
 public class TicTacToe extends Game {
     //region vars
     private Scanner scanner = new Scanner(System.in);
@@ -188,12 +207,22 @@ public class TicTacToe extends Game {
 
     //region win checks
     public boolean checkIfWon() {
-        if (checkIfWinningLine(field.field)) return true;
-        else if (checkIfWinningDiagonal()) return true;
-        else return checkIfWinningLine(swapMatrix(field.field));
+        return getWinState().gameWon();
     }
 
-    private boolean checkIfWinningDiagonal() {
+    public WinState getWinState() {
+        WinState winState = WinState.CONTINUE_GAME;
+
+        WinState winningLine = checkIfWinningLine(field.field);
+        if (winningLine.gameWon()) return winningLine;
+
+        WinState winningDiagonal = checkIfWinningDiagonal();
+        if (winningDiagonal.gameWon()) return winningDiagonal;
+
+        return checkIfWinningLine(swapMatrix(field.field));
+    }
+
+    private WinState checkIfWinningDiagonal() {
         Piece checkForPiece = field.field[0][0];
         if (checkForPiece != Piece.EMPTY) {
             int matches = 0;
@@ -201,21 +230,21 @@ public class TicTacToe extends Game {
                 Piece p = field.field[i][i];
                 if (p == checkForPiece) matches++;
             }
-            if (matches >= 3) return true;
+            if (matches >= 3) return WinState.fromPiece(checkForPiece);
         }
 
         checkForPiece = field.field[0][field.field.length - 1];
-        if (checkForPiece == Piece.EMPTY) return false;
+        if (checkForPiece == Piece.EMPTY) return WinState.CONTINUE_GAME;
 
         int matches = 0;
         for (int i = field.field.length - 1; i >= 0; i--) {
             Piece p = field.field[field.field.length - i - 1][i];
             if (p == checkForPiece) matches++;
         }
-        return matches >= 3;
+        return matches >= 3 ? WinState.fromPiece(checkForPiece) : WinState.CONTINUE_GAME;
     }
 
-    private boolean checkIfWinningLine(Piece[][] matrix) {
+    private WinState checkIfWinningLine(Piece[][] matrix) {
         for (Piece[] row : matrix) {
             int matchingAmount = 0;
             Piece lastMatch = Piece.EMPTY;
@@ -227,11 +256,9 @@ public class TicTacToe extends Game {
                 else matchingAmount = 0;
             }
 
-            if (matchingAmount == 3) {
-                return true;
-            }
+            if (matchingAmount == 3) return WinState.fromPiece(lastMatch);
         }
-        return false;
+        return WinState.CONTINUE_GAME;
     }
 
     private static Piece[][] swapMatrix(Piece[][] pField) {
