@@ -1,6 +1,7 @@
 package game;
 
 import ai.BaseAI;
+import ai.MinMaxAI;
 import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
@@ -105,7 +106,9 @@ public class TicTacToe extends Game {
     }
 
     public void initMinMaxAI() {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        ai = new MinMaxAI(this);
+        ai.initialize(computer);
+        nextTick(0);
     }
     //endregion
 
