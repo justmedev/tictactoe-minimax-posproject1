@@ -28,25 +28,6 @@ enum Enemy {
     PLAYER_1,
 }
 
-enum WinState {
-    X,
-    O,
-    DRAW,
-    // Nobody won, signals to just continue the game instead of exiting.
-    CONTINUE_GAME;
-
-    public static WinState fromPiece(Piece piece) {
-        if (piece == Piece.X) return WinState.X;
-        else if (piece == Piece.O) return WinState.O;
-
-        return WinState.CONTINUE_GAME;
-    }
-
-    public boolean gameWon() {
-        return this == X || this == O;
-    }
-}
-
 public class TicTacToe extends Game {
     //region vars
     private Scanner scanner = new Scanner(System.in);
@@ -157,7 +138,7 @@ public class TicTacToe extends Game {
             return;
         }
 
-        if (checkIfWon()) {
+        if (GameState.checkIfWon(field.field)) {
             renderer.render(field.field);
 
             if (currentPlayer == Player.PLAYER_1) logger.info("Congrats :) You won the game!");
@@ -202,77 +183,6 @@ public class TicTacToe extends Game {
         while (true) {
             if (scanner.hasNext()) return scanner.next();
         }
-    }
-    //endregion
-
-    //region win checks
-    public boolean checkIfWon() {
-        return getWinState().gameWon();
-    }
-
-    public WinState getWinState() {
-        WinState winState = WinState.CONTINUE_GAME;
-
-        WinState winningLine = checkIfWinningLine(field.field);
-        if (winningLine.gameWon()) return winningLine;
-
-        WinState winningDiagonal = checkIfWinningDiagonal();
-        if (winningDiagonal.gameWon()) return winningDiagonal;
-
-        return checkIfWinningLine(swapMatrix(field.field));
-    }
-
-    private WinState checkIfWinningDiagonal() {
-        Piece checkForPiece = field.field[0][0];
-        if (checkForPiece != Piece.EMPTY) {
-            int matches = 0;
-            for (int i = 0; i < field.field.length; i++) {
-                Piece p = field.field[i][i];
-                if (p == checkForPiece) matches++;
-            }
-            if (matches >= 3) return WinState.fromPiece(checkForPiece);
-        }
-
-        checkForPiece = field.field[0][field.field.length - 1];
-        if (checkForPiece == Piece.EMPTY) return WinState.CONTINUE_GAME;
-
-        int matches = 0;
-        for (int i = field.field.length - 1; i >= 0; i--) {
-            Piece p = field.field[field.field.length - i - 1][i];
-            if (p == checkForPiece) matches++;
-        }
-        return matches >= 3 ? WinState.fromPiece(checkForPiece) : WinState.CONTINUE_GAME;
-    }
-
-    private WinState checkIfWinningLine(Piece[][] matrix) {
-        for (Piece[] row : matrix) {
-            int matchingAmount = 0;
-            Piece lastMatch = Piece.EMPTY;
-
-            for (int i = 0; i < row.length; i++) {
-                Piece piece = row[i];
-                if (i == 0) lastMatch = piece;
-                if (lastMatch == piece && piece != Piece.EMPTY) matchingAmount++;
-                else matchingAmount = 0;
-            }
-
-            if (matchingAmount == 3) return WinState.fromPiece(lastMatch);
-        }
-        return WinState.CONTINUE_GAME;
-    }
-
-    private static Piece[][] swapMatrix(Piece[][] pField) {
-        int originalTotalRows = pField.length;
-        int originalTotalColumns = pField[0].length;
-
-        Piece[][] newMatrix = new Piece[originalTotalColumns][originalTotalRows];
-
-        for (int i = 0; i < originalTotalRows; i++) {
-            for (int j = 0; j < originalTotalColumns; j++) {
-                newMatrix[j][i] = pField[i][j];
-            }
-        }
-        return newMatrix;
     }
     //endregion
 }

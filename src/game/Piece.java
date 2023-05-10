@@ -17,4 +17,9 @@ public enum Piece {
     public String getSymbolString() {
         return Character.toString(symbol);
     }
+
+    public Piece getOther() {
+        if (this == EMPTY) return null;
+        return this == X ? O : X;
+    }
 }
