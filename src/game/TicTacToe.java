@@ -38,6 +38,7 @@ public class TicTacToe extends Game {
     public Piece computer;
     public BaseAI ai;
     public Player lastPlayer = Player.PLAYER_0;
+    public Enemy enemy;
     //endregion
 
     public TicTacToe() {
@@ -70,6 +71,7 @@ public class TicTacToe extends Game {
     }
 
     public void startGame(Enemy enemy) {
+        this.enemy = enemy;
         System.out.println("Choose symbol o/x:");
 
         if (scanner.hasNext()) {
@@ -92,7 +94,7 @@ public class TicTacToe extends Game {
 
             if (enemy == Enemy.MIN_MAX) initMinMaxAI();
             else if (enemy == Enemy.RANDOM_AI) initRandomAI();
-            else throw new UnsupportedOperationException("Not yet implemented.");
+            else nextTick(0);
         }
     }
 
@@ -117,6 +119,9 @@ public class TicTacToe extends Game {
         if (currentPlayer == Player.PLAYER_1) {
             chosen = getFieldFromPlayer();
             pieceToPlace = player;
+        } else if (enemy == Enemy.PLAYER_1) {
+            chosen = getFieldFromPlayer();
+            pieceToPlace = computer;
         } else {
             chosen = ai.nextMove(field, tick);
             pieceToPlace = computer;
