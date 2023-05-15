@@ -1,7 +1,7 @@
 package game;
 
 import ai.BaseAI;
-import ai.MinMaxAI;
+import ai.MiniMaxAI;
 import ai.RandomAI;
 import engine.Game;
 import engine.Logger;
@@ -93,7 +93,7 @@ public class TicTacToe extends Game {
             System.out.printf("Hello! You are player %s%n", player);
             System.out.println("This is the empty starting field. Rows are A-C and cols are 1-3! Example move: a2");
 
-            if (enemy == Enemy.MIN_MAX) initMinMaxAI();
+            if (enemy == Enemy.MIN_MAX) initMiniMaxAI();
             else if (enemy == Enemy.RANDOM_AI) initRandomAI();
             else nextTick(0);
         }
@@ -105,8 +105,8 @@ public class TicTacToe extends Game {
         nextTick(0); // Execute first game tick after start
     }
 
-    public void initMinMaxAI() {
-        ai = new MinMaxAI(this, 6);
+    public void initMiniMaxAI() {
+        ai = new MiniMaxAI(this, 6);
         ai.initialize(computer);
         nextTick(0);
     }

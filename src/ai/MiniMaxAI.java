@@ -5,14 +5,14 @@ import game.*;
 
 import java.util.ArrayList;
 
-public class MinMaxAI extends BaseAI {
-    private Logger logger = new Logger("ai.MinMaxAI");
+public class MiniMaxAI extends BaseAI {
+    private Logger logger = new Logger("ai.MiniMaxAI");
     private TicTacToe game;
     private int maxDepth;
     private ChosenField nextAIMove;
 
     // depth defines the difficulty
-    public MinMaxAI(TicTacToe ticTacToe, int maxDepth) {
+    public MiniMaxAI(TicTacToe ticTacToe, int maxDepth) {
         this.maxDepth = maxDepth;
         this.game = ticTacToe;
 
@@ -38,7 +38,7 @@ public class MinMaxAI extends BaseAI {
                 {Piece.O, Piece.O, Piece.EMPTY},
         }));
 
-        int score = minMax(field.field, game.computer, 0);
+        int score = miniMax(field.field, game.computer, 0);
         logger.infof("AI nextMove calculated score: %s", score);
         return nextAIMove;
     }
@@ -54,7 +54,7 @@ public class MinMaxAI extends BaseAI {
         return empty;
     }
 
-    public int minMax(Piece[][] fieldState, Piece player, int depth) {
+    public int miniMax(Piece[][] fieldState, Piece player, int depth) {
         // check if we reached search depth or if game end state is reached and return score
         if (depth >= maxDepth || GameState.checkIfWon(fieldState)) {
             return calculateScore(fieldState);
@@ -71,7 +71,7 @@ public class MinMaxAI extends BaseAI {
             Piece[][] possibleField = game.field.field.clone();
 
             possibleField[availablePosition.row()][availablePosition.col()] = game.computer;
-            scores.add(minMax(possibleField, game.player, depth + 1));
+            scores.add(miniMax(possibleField, game.player, depth + 1));
 
             possibleField[availablePosition.row()][availablePosition.col()] = Piece.EMPTY;
             moves.add(availablePosition);
