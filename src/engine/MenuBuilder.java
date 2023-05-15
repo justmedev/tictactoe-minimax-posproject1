@@ -4,10 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MenuBuilder {
-    private char ceiling = '-';
-    private char wall = '|';
+    private final char ceiling = '-';
+    private final char wall = '|';
     private String title;
-    private StringBuilder menu = new StringBuilder();
+    private final StringBuilder menu = new StringBuilder();
 
     public MenuBuilder createMenu(LinkedHashMap<String, String> data) {
         int longestKeyLength = 0;

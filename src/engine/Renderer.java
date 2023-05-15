@@ -3,11 +3,11 @@ package engine;
 import game.Piece;
 
 public class Renderer {
-    private Logger logger = new Logger("engine.Renderer");
-    private String corner = "+";
-    private String wall = "|";
-    private String ceiling = "-";
-    private String floor = "-";
+    private final Logger logger = new Logger("engine.Renderer");
+    private final String corner = "+";
+    private final String wall = "|";
+    private final String ceiling = "-";
+    private final String floor = "-";
 
     public void render(Piece[][] field) {
         char[][] matrix = new char[4][4];

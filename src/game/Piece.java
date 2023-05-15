@@ -5,7 +5,8 @@ public enum Piece {
     O('o'),
     EMPTY(' ');
 
-    private char symbol;
+    private final char symbol;
+
     Piece(char symbol) {
         this.symbol = symbol;
     }
