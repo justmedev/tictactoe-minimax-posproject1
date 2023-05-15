@@ -10,7 +10,6 @@ import engine.Renderer;
 import game.errors.PositionOccupied;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -31,8 +30,8 @@ enum Enemy {
 
 public class TicTacToe extends Game {
     //region vars
-    private Scanner scanner = new Scanner(System.in);
-    private Logger logger = new Logger("game.TicTacToe");
+    private static final Logger logger = new Logger("game.TicTacToe");
+    private final Scanner scanner = new Scanner(System.in);
     public Field field = new Field();
     public Renderer renderer = new Renderer();
     public Piece player;
@@ -176,10 +175,6 @@ public class TicTacToe extends Game {
     //region util
     public void clearConsole() {
         System.out.println(System.lineSeparator().repeat(100)); // cross-platform & always works
-    }
-
-    public int readInputAsInt(String message) {
-        return Integer.parseInt(readInput(message));
     }
 
     public String readInput(String message) {

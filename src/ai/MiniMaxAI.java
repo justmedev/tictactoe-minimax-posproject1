@@ -6,12 +6,9 @@ import game.*;
 public class MiniMaxAI extends BaseAI {
     private static final Logger logger = new Logger("ai.MiniMaxAI");
     private final TicTacToe game;
-    private int maxDepth;
-    private ChosenField nextAIMove;
 
-    // depth defines the difficulty
+    // depth defines the difficulty (ignored atm; max difficulty is always on)
     public MiniMaxAI(TicTacToe ticTacToe, int maxDepth) {
-        this.maxDepth = maxDepth;
         this.game = ticTacToe;
     }
 
