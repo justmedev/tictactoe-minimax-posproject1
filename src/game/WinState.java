@@ -15,6 +15,6 @@ public enum WinState {
     }
 
     public boolean gameWon() {
-        return this == X || this == O;
+        return this == X || this == O || this == DRAW;
     }
 }
