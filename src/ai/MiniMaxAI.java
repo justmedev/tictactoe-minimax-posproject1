@@ -32,12 +32,6 @@ public class MiniMaxAI extends BaseAI {
 
     @Override
     public ChosenField nextMove(Field field, int tick) {
-        logger.infof("AI nextMove calculated score: %s", calculateScore(new Piece[][]{
-                {Piece.X, Piece.X, Piece.X},
-                {Piece.EMPTY, Piece.O, Piece.EMPTY},
-                {Piece.O, Piece.O, Piece.EMPTY},
-        }));
-
         int score = miniMax(field.field, game.computer, 0);
         logger.infof("AI nextMove calculated score: %s", score);
         return nextAIMove;
