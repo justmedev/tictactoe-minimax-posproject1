@@ -1,6 +1,19 @@
 package game;
 
+import java.util.ArrayList;
+
 public class GameState {
+    public static ArrayList<ChosenField> getAllEmptyPositions(Piece[][] field) {
+        ArrayList<ChosenField> empty = new ArrayList<>();
+
+        for (int row = 0; row < field.length; row++) {
+            for (int place = 0; place < field[row].length; place++) {
+                if (field[row][place] == Piece.EMPTY) empty.add(new ChosenField(row, place));
+            }
+        }
+        return empty;
+    }
+
     public static boolean checkIfWon(Piece[][] field) {
         return getWinState(field).gameWon();
     }
@@ -19,13 +32,7 @@ public class GameState {
     }
 
     private static WinState checkForDraw(Piece[][] field) {
-        int emptyPieces = 0;
-        for (Piece[] rows : field) {
-            for (Piece piece : rows) {
-                if(piece == Piece.EMPTY) emptyPieces++;
-            }
-        }
-        return emptyPieces == 0 ? WinState.DRAW : WinState.CONTINUE_GAME;
+        return getAllEmptyPositions(field).size() == 0 ? WinState.DRAW : WinState.CONTINUE_GAME;
     }
 
     private static WinState checkIfWinningDiagonal(Piece[][] field) {

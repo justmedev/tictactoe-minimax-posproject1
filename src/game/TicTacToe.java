@@ -131,10 +131,10 @@ public class TicTacToe extends Game {
         }
         if (chosen == null) return; // Something went wrong; Panic & Exit
 
+        logger.infof("chosen: field[%d][%d]: %s", chosen.row(), chosen.col(), field.field[chosen.row()][chosen.col()]);
         try {
             field.place(chosen.row(), chosen.col(), pieceToPlace);
         } catch (PositionOccupied e) {
-            // logger.infof("chosen: field[%d][%d]: %s", chosen.row(), chosen.col(), field.field[chosen.row()][chosen.col()]);
             // logger.info("Client ", Player.otherPlayer(lastPlayer), " tried executing an invalid move! (plyr 1 is human; plyr 0 is a bot)");
             logger.info("Position already occupied! Try another one.");
             nextTick(tick++);
