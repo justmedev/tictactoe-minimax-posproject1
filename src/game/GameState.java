@@ -6,6 +6,9 @@ public class GameState {
     }
 
     public static WinState getWinState(Piece[][] field) {
+        WinState drawWin = checkForDraw(field);
+        if (drawWin.gameWon()) return drawWin;
+
         WinState winningLine = checkIfWinningLine(field);
         if (winningLine.gameWon()) return winningLine;
 
@@ -13,6 +16,16 @@ public class GameState {
         if (winningDiagonal.gameWon()) return winningDiagonal;
 
         return checkIfWinningLine(swapMatrix(field));
+    }
+
+    private static WinState checkForDraw(Piece[][] field) {
+        int emptyPieces = 0;
+        for (Piece[] rows : field) {
+            for (Piece piece : rows) {
+                if(piece == Piece.EMPTY) emptyPieces++;
+            }
+        }
+        return emptyPieces == 0 ? WinState.DRAW : WinState.CONTINUE_GAME;
     }
 
     private static WinState checkIfWinningDiagonal(Piece[][] field) {
