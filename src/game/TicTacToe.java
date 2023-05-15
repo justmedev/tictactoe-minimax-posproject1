@@ -53,12 +53,13 @@ public class TicTacToe extends Game {
     }
 
     public void makeMenu() {
+        LinkedHashMap<String, String> menuEntries = new LinkedHashMap<>();
+        menuEntries.put("a\t", "Against dumb ai");
+        menuEntries.put("b\t", "Against smart ai");
+        menuEntries.put("c\t", "Two Player Mode");
+
         MenuBuilder menuBuilder = new MenuBuilder();
-        menuBuilder.createMenu(new LinkedHashMap<>(Map.of(
-                "a\t", "Against dumb ai",
-                "b\t", "Against smart ai",
-                "c\t", "Two Player Mode"
-        ))).display();
+        menuBuilder.createMenu(menuEntries).display();
 
         switch (readInput("a, b or c? ").trim().charAt(0)) {
             case 'a' -> startGame(Enemy.RANDOM_AI);
