@@ -106,7 +106,7 @@ public class TicTacToe extends Game {
     }
 
     public void initMinMaxAI() {
-        ai = new MinMaxAI(this);
+        ai = new MinMaxAI(this, 6);
         ai.initialize(computer);
         nextTick(0);
     }
@@ -150,7 +150,7 @@ public class TicTacToe extends Game {
         }
 
         lastPlayer = Player.otherPlayer(lastPlayer);
-        clearConsole();
+        // clearConsole();
         nextTick(tick++);
     }
 
